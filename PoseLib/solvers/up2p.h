@@ -38,9 +38,9 @@ namespace poselib {
 
 int up2p(const std::vector<Eigen::Vector3d> &x,
          const std::vector<Eigen::Vector3d> &X,
-         double phi_x,
-         double phi_z,
-         CameraPoseVector *output);
+         CameraPoseVector *output,
+         double phi_x = 0,
+         double phi_z = 0);
 }; // namespace poselib
 
 #endif
