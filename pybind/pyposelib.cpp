@@ -124,9 +124,9 @@ std::vector<CameraPose> p3ll_wrapper(const std::vector<Eigen::Vector3d> &l, cons
     return output;
 }
 
-std::vector<CameraPose> up2p_wrapper(const std::vector<Eigen::Vector3d> &x, const std::vector<Eigen::Vector3d> &X) {
+std::vector<CameraPose> up2p_wrapper(const std::vector<Eigen::Vector3d> &x, const std::vector<Eigen::Vector3d> &X, double phi_x, double phi_z) {
     std::vector<CameraPose> output;
-    up2p(x, X, &output);
+    up2p(x, X, &output, phi_x, phi_z);
     return output;
 }
 
@@ -775,7 +775,7 @@ PYBIND11_MODULE(poselib, m) {
     m.def("p2p1ll", &poselib::p2p1ll_wrapper, py::arg("xp"), py::arg("Xp"), py::arg("l"), py::arg("X"), py::arg("V"));
     m.def("p1p2ll", &poselib::p1p2ll_wrapper, py::arg("xp"), py::arg("Xp"), py::arg("l"), py::arg("X"), py::arg("V"));
     m.def("p3ll", &poselib::p3ll_wrapper, py::arg("l"), py::arg("X"), py::arg("V"));
-    m.def("up2p", &poselib::up2p_wrapper, py::arg("x"), py::arg("X"));
+    m.def("up2p", &poselib::up2p_wrapper, py::arg("x"), py::arg("X"), py::arg("phi_x") = 0, py::arg("phi_z") = 0);
     m.def("ugp2p", &poselib::ugp2p_wrapper, py::arg("p"), py::arg("x"), py::arg("X"));
     m.def("ugp3ps", &poselib::ugp3ps_wrapper, py::arg("p"), py::arg("x"), py::arg("X"), py::arg("filter_solutions"));
     m.def("up1p2pl", &poselib::up1p2pl_wrapper, py::arg("xp"), py::arg("Xp"), py::arg("x"), py::arg("X"), py::arg("V"));
