@@ -68,7 +68,7 @@ int poselib::up2p(const std::vector<Eigen::Vector3d> &x,
     X[1](0) * (8 * x[1](2) * c * d - 2 * x[1](0) * (csq + 1) * (1 - dsq)) + X[1](2) * (2 * x[1](2) * (csq - 1) * (dsq + 1)),
         X[1](0) * (x[1](2) * (1 - csq) * (1 + dsq)) + X[1](1) * (-2 * x[1](0) * (csq + 1) * d - 2 * x[1](2) * c * (1 - dsq)) + X[1](2) * (4 * x[1](2) * c * d - x[1](0) * (csq + 1) * (dsq - 1)),
     -1 * (X[1](0) * (2 * x[1](1) * (csq + 1) * (1-dsq) + 2 * x[1](2) * d * (1 - csq)) + X[1](2) * (4 * x[1](2) * c * (dsq + 1))),
-        -1 * (X[1](0) * (-2 * x[1](2) * c * (dsq + 1)) + X[1](1) * (2 * x[1](1) * d * (csq + 1) - x[1](2) * (1 - csq) * (1 - dsq)) + X[1](2) * (x[1](1) * (csq + 1) * (1 - dsq) + 2 * x[1](2) * d * (1 - csq)))
+        -1 * (X[1](0) * (-2 * x[1](2) * c * (dsq + 1)) + X[1](1) * (2 * x[1](1) * d * (csq + 1) - x[1](2) * (1 - csq) * (1 - dsq)) + X[1](2) * (x[1](1) * (csq + 1) * (1 - dsq) + 2 * x[1](2) * d * (1 - csq)));
 
 //    b <<
 //    -2 * X[0](0) * x[0](0) - 2 * X[0](2) * x[0](2),
@@ -93,7 +93,7 @@ int poselib::up2p(const std::vector<Eigen::Vector3d> &x,
     for (int i = 0; i < sols; ++i) {
         const double q = qq[i];
         const double q2 = q * q;
-        const double inv_norm = 1.0 / (1 + q2);
+        const double inv_norm = 1.0 / ((1 + q2) * (1 + csq) * (1 + dsq));
         const double cq = (1 - q2) * inv_norm;
         const double sq = 2 * q * inv_norm;
 
