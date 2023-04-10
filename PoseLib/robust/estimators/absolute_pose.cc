@@ -36,6 +36,8 @@
 #include "PoseLib/solvers/p3p.h"
 #include "PoseLib/solvers/p5lp_radial.h"
 
+#include "PoseLib/solvers/up2p.h"
+
 namespace poselib {
 
 void AbsolutePoseEstimator::generate_models(std::vector<CameraPose> *models) {
@@ -44,7 +46,7 @@ void AbsolutePoseEstimator::generate_models(std::vector<CameraPose> *models) {
         xs[k] = x[sample[k]].homogeneous().normalized();
         Xs[k] = X[sample[k]];
     }
-    p3p(xs, Xs, models);
+    up2p(xs, Xs, models, phi_x, phi_z);
 }
 
 double AbsolutePoseEstimator::score_model(const CameraPose &pose, size_t *inlier_count) const {
