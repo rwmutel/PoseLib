@@ -85,7 +85,7 @@ RansacStats u_estimate_absolute_pose(const std::vector<Point2D> &points2D, const
     RansacOptions ransac_opt_scaled = ransac_opt;
     ransac_opt_scaled.max_reproj_error /= camera.focal();
 
-    RansacStats stats = ransac_pnp(points2D_calib, points3D, ransac_opt_scaled, pose, inliers);
+    RansacStats stats = ransac_upnp(points2D_calib, points3D, ransac_opt_scaled, pose, inliers, phi_x, phi_z);
 
     if (stats.num_inliers > 3) {
         // Collect inlier for additional bundle adjustment

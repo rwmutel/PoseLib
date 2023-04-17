@@ -59,7 +59,7 @@ RansacStats ransac_upnp(const std::vector<Point2D> &x, const std::vector<Point3D
 
     best_model->q << 1.0, 0.0, 0.0, 0.0;
     best_model->t.setZero();
-    AbsolutePoseEstimator estimator(opt, x, X);
+    AbsolutePoseEstimator estimator(opt, x, X, phi_x, phi_z);
     RansacStats stats = ransac<AbsolutePoseEstimator>(estimator, opt, best_model);
 
     get_inliers(*best_model, x, X, opt.max_reproj_error * opt.max_reproj_error, best_inliers);

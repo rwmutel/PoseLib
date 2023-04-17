@@ -46,8 +46,12 @@ void AbsolutePoseEstimator::generate_models(std::vector<CameraPose> *models) {
         xs[k] = x[sample[k]].homogeneous().normalized();
         Xs[k] = X[sample[k]];
     }
-//    up2p(xs, Xs, models, phi_x, phi_z);
-    p3p(xs, Xs, models);
+    if (use_up2p) {
+        up2p(xs, Xs, models, phi_x, phi_z);
+    }
+    else {
+        p3p(xs, Xs, models);
+    }
 }
 
 double AbsolutePoseEstimator::score_model(const CameraPose &pose, size_t *inlier_count) const {

@@ -40,11 +40,20 @@ class AbsolutePoseEstimator {
   public:
     AbsolutePoseEstimator(const RansacOptions &ransac_opt, const std::vector<Point2D> &points2D,
                           const std::vector<Point3D> &points3D)
-        : num_data(points2D.size()), opt(ransac_opt), x(points2D), X(points3D),
+        : num_data(points2D.size()), opt(ransac_opt), x(points2D), X(points3D), use_up2p(false),
           sampler(num_data, sample_sz, opt.seed, opt.progressive_sampling, opt.max_prosac_iterations) {
         xs.resize(sample_sz);
         Xs.resize(sample_sz);
-        sample.resize(sample_sz);
+        sample.resize(3);
+    }
+
+    AbsolutePoseEstimator(const RansacOptions &ransac_opt, const std::vector<Point2D> &points2D,
+                          const std::vector<Point3D> &points3D, double phi_x, double phi_z)
+            : num_data(points2D.size()), opt(ransac_opt), x(points2D), X(points3D), phi_x(phi_x), phi_z(phi_z), use_up2p(true),
+              sampler(num_data, sample_sz, opt.seed, opt.progressive_sampling, opt.max_prosac_iterations) {
+        xs.resize(sample_sz);
+        Xs.resize(sample_sz);
+        sample.resize(2);
     }
 
     void generate_models(std::vector<CameraPose> *models);
@@ -58,8 +67,9 @@ class AbsolutePoseEstimator {
     const RansacOptions &opt;
     const std::vector<Point2D> &x;
     const std::vector<Point3D> &X;
-    double phi_x;
-    double phi_z;
+    double phi_x = 0;
+    double phi_z = 0;
+    bool use_up2p;
 
     RandomSampler sampler;
     // pre-allocated vectors for sampling
