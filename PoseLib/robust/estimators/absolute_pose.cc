@@ -62,7 +62,8 @@ void AbsolutePoseEstimator::refine_model(CameraPose *pose) const {
     BundleOptions bundle_opt;
     bundle_opt.loss_type = BundleOptions::LossType::TRUNCATED;
     bundle_opt.loss_scale = opt.max_reproj_error;
-    bundle_opt.max_iterations = 25;
+//    bundle_opt.max_iterations = 25;
+    bundle_opt.max_iterations = 0;
 
     // TODO: for high outlier scenarios, make a copy of (x,X) and find points close to inlier threshold
     // TODO: experiment with good thresholds for copy vs iterating full point set

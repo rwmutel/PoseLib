@@ -40,27 +40,27 @@ class AbsolutePoseEstimator {
   public:
     AbsolutePoseEstimator(const RansacOptions &ransac_opt, const std::vector<Point2D> &points2D,
                           const std::vector<Point3D> &points3D)
-        : num_data(points2D.size()), opt(ransac_opt), x(points2D), X(points3D), use_up2p(false),
-          sampler(num_data, sample_sz, opt.seed, opt.progressive_sampling, opt.max_prosac_iterations) {
+        : num_data(points2D.size()), opt(ransac_opt), x(points2D), X(points3D), use_up2p(false), sample_sz(3),
+          sampler(num_data, 3, opt.seed, opt.progressive_sampling, opt.max_prosac_iterations) {
         xs.resize(sample_sz);
         Xs.resize(sample_sz);
-        sample.resize(3);
+        sample.resize(sample_sz);
     }
 
     AbsolutePoseEstimator(const RansacOptions &ransac_opt, const std::vector<Point2D> &points2D,
                           const std::vector<Point3D> &points3D, double phi_x, double phi_z)
-            : num_data(points2D.size()), opt(ransac_opt), x(points2D), X(points3D), phi_x(phi_x), phi_z(phi_z), use_up2p(true),
-              sampler(num_data, sample_sz, opt.seed, opt.progressive_sampling, opt.max_prosac_iterations) {
+            : num_data(points2D.size()), opt(ransac_opt), x(points2D), X(points3D), phi_x(phi_x), phi_z(phi_z), use_up2p(true), sample_sz(2),
+              sampler(num_data, 2, opt.seed, opt.progressive_sampling, opt.max_prosac_iterations) {
         xs.resize(sample_sz);
         Xs.resize(sample_sz);
-        sample.resize(2);
+        sample.resize(sample_sz);
     }
 
     void generate_models(std::vector<CameraPose> *models);
     double score_model(const CameraPose &pose, size_t *inlier_count) const;
     void refine_model(CameraPose *pose) const;
 
-    const size_t sample_sz = 3;
+    size_t sample_sz;
     const size_t num_data;
 
   private:
