@@ -238,8 +238,7 @@ std::pair<CameraPose, py::dict> estimate_absolute_pose_wrapper(const std::vector
                                                                const std::vector<Eigen::Vector3d> points3D,
                                                                const py::dict &camera_dict,
                                                                const py::dict &ransac_opt_dict,
-                                                               const py::dict &bundle_opt_dict,
-                                                               double phi_x, double phi_z) {
+                                                               const py::dict &bundle_opt_dict){
 
     Camera camera = camera_from_dict(camera_dict);
 
@@ -253,7 +252,7 @@ std::pair<CameraPose, py::dict> estimate_absolute_pose_wrapper(const std::vector
     CameraPose pose;
     std::vector<char> inlier_mask;
 
-    RansacStats stats = estimate_absolute_pose(points2D, points3D, camera, ransac_opt, bundle_opt, &pose, &inlier_mask, phi_x, phi_z);
+    RansacStats stats = estimate_absolute_pose(points2D, points3D, camera, ransac_opt, bundle_opt, &pose, &inlier_mask);
 
     py::dict output_dict;
     write_to_dict(stats, output_dict);
@@ -796,7 +795,7 @@ PYBIND11_MODULE(poselib, m) {
 
     // Robust estimators
     m.def("estimate_absolute_pose", &poselib::estimate_absolute_pose_wrapper, py::arg("points2D"), py::arg("points3D"),
-          py::arg("camera_dict"), py::arg("ransac_opt") = py::dict(), py::arg("bundle_opt") = py::dict(), py::arg("phi_x") = 0, py::arg("phi_z") = 0,
+          py::arg("camera_dict"), py::arg("ransac_opt") = py::dict(), py::arg("bundle_opt") = py::dict(),
           "Absolute pose estimation with non-linear refinement.");
     m.def("estimate_absolute_pose_pnpl", &poselib::estimate_absolute_pose_pnpl_wrapper, py::arg("points2D"),
           py::arg("points3D"), py::arg("lines2D_1"), py::arg("lines2D_2"), py::arg("lines3D_1"), py::arg("lines3D_2"),

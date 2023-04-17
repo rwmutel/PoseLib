@@ -42,11 +42,24 @@
 namespace poselib {
 
 RansacStats ransac_pnp(const std::vector<Point2D> &x, const std::vector<Point3D> &X, const RansacOptions &opt,
+                       CameraPose *best_model, std::vector<char> *best_inliers) {
+
+    best_model->q << 1.0, 0.0, 0.0, 0.0;
+    best_model->t.setZero();
+    AbsolutePoseEstimator estimator(opt, x, X);
+    RansacStats stats = ransac<AbsolutePoseEstimator>(estimator, opt, best_model);
+
+    get_inliers(*best_model, x, X, opt.max_reproj_error * opt.max_reproj_error, best_inliers);
+
+    return stats;
+}
+
+RansacStats ransac_upnp(const std::vector<Point2D> &x, const std::vector<Point3D> &X, const RansacOptions &opt,
                        CameraPose *best_model, std::vector<char> *best_inliers, double phi_x, double phi_z) {
 
     best_model->q << 1.0, 0.0, 0.0, 0.0;
     best_model->t.setZero();
-    AbsolutePoseEstimator estimator(opt, x, X, phi_x, phi_z);
+    AbsolutePoseEstimator estimator(opt, x, X);
     RansacStats stats = ransac<AbsolutePoseEstimator>(estimator, opt, best_model);
 
     get_inliers(*best_model, x, X, opt.max_reproj_error * opt.max_reproj_error, best_inliers);

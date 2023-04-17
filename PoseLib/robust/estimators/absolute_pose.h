@@ -39,8 +39,8 @@ namespace poselib {
 class AbsolutePoseEstimator {
   public:
     AbsolutePoseEstimator(const RansacOptions &ransac_opt, const std::vector<Point2D> &points2D,
-                          const std::vector<Point3D> &points3D, double oracle_phi_x, double oracle_phi_z)
-        : num_data(points2D.size()), opt(ransac_opt), x(points2D), X(points3D), phi_x(oracle_phi_x), phi_z(oracle_phi_z),
+                          const std::vector<Point3D> &points3D)
+        : num_data(points2D.size()), opt(ransac_opt), x(points2D), X(points3D),
           sampler(num_data, sample_sz, opt.seed, opt.progressive_sampling, opt.max_prosac_iterations) {
         xs.resize(sample_sz);
         Xs.resize(sample_sz);
